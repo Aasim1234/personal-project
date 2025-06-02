@@ -7,5 +7,5 @@ WORKDIR /app
 COPY . .
 
 # Use Python's built-in HTTP server to serve the HTML
-EXPOSE 8082
+EXPOSE 80
 CMD ["python", "-m", "http.server", "8080"]
