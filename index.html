@@ -1,14 +1,710 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>AI Image Text Editor</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medicare Consultancy</title>
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7f9;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    /* Header */
+    header {
+      background-color: #00509e;
+      color: white;
+      padding: 20px 10px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    header img {
+      height: 80px;
+      margin-bottom: 8px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    header p {
+      margin: 4px 0 0;
+      font-style: italic;
+    }
+
+    /* Dark mode toggle */
+    .toggle-button {
+      background-color: #ffc107;
+      border: none;
+      padding: 10px 15px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 1100;
+      user-select: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      background-color: #003f7f;
+      padding: 10px;
+      position: sticky;
+      top: 120px;
+      z-index: 900;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      background-color: #00509e;
+      outline: none;
+    }
+
+    /* Sections */
+    section {
+      padding: 30px 15px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #003f7f;
+      margin-top: 0;
+      border-bottom: 2px solid #00509e;
+      padding-bottom: 8px;
+    }
+
+    /* Form styles */
+    .form-container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container input,
+    .form-container select,
+    .form-container button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .form-container input:focus,
+    .form-container select:focus {
+      outline: none;
+      border-color: #00509e;
+      box-shadow: 0 0 5px #00509eaa;
+    }
+
+    .form-container button {
+      background-color: #00509e;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .form-container button:hover,
+    .form-container button:focus {
+      background-color: #003f7f;
+      outline: none;
+    }
+
+    .whatsapp-link {
+      display: inline-block;
+      margin-top: 10px;
+      background-color: #25D366;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* Founders */
+    .founders {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .founder-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      min-width: 250px;
+      max-width: 300px;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .dark-mode .founder-card {
+      background: #1f1f1f;
+    }
+
+    .founder-card h3 {
+      margin: 0 0 5px;
+    }
+
+    /* Testimonials */
+    .testimonial {
+      background-color: #e8f0fe;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      font-style: italic;
+      transition: background-color 0.3s;
+    }
+
+    .dark-mode .testimonial {
+      background-color: #2a2a2a;
+    }
+
+    /* Tools */
+    .tool-box {
+      background-color: #ffffff;
+      padding: 15px;
+      margin: 10px auto;
+      border-radius: 5px;
+      max-width: 600px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s;
+    }
+
+    .dark-mode .tool-box {
+      background-color: #1e1e1e;
+    }
+
+    /* FAQ */
+    .faq-container {
+      max-width: 700px;
+      margin: 20px auto;
+    }
+
+    .faq-item {
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: background-color 0.3s;
+    }
+
+    .dark-mode .faq-item {
+      background: #222;
+    }
+
+    .faq-question {
+      padding: 15px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      user-select: none;
+      position: relative;
+    }
+
+    .faq-question::after {
+      content: '+';
+      position: absolute;
+      right: 20px;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+
+    .faq-item.open .faq-question::after {
+      content: '−';
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 20px;
+      transition: max-height 0.3s ease;
+      line-height: 1.4;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 400px;
+      padding: 15px 20px;
+    }
+
+    /* Back to top */
+    #backToTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 1200;
+      font-size: 18px;
+      background-color: #00509e;
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+
+    #backToTopBtn:hover,
+    #backToTopBtn:focus {
+      background-color: #003f7f;
+      outline: none;
+    }
+
+    /* Counters */
+    .counters {
+      display: flex;
+      justify-content: space-around;
+      max-width: 700px;
+      margin: 20px auto;
+      gap: 30px;
+      text-align: center;
+    }
+
+    .counter {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      transition: background-color 0.3s;
+    }
+
+    .dark-mode .counter {
+      background: #222;
+    }
+
+    .counter-number {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #00509e;
+    }
+
+    .dark-mode .counter-number {
+      color: #82cfff;
+    }
+
+    .counter-label {
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* Social Icons */
+    .social-icons {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .social-icons a {
+      display: inline-block;
+      margin: 0 12px;
+      color: #00509e;
+      font-size: 28px;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .social-icons a:hover,
+    .social-icons a:focus {
+      color: #003f7f;
+      outline: none;
+    }
+
+    .dark-mode .social-icons a {
+      color: #82cfff;
+    }
+
+    /* Loading spinner */
+    #loadingSpinner {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1300;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #00509e;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    /* Footer */
+    footer {
+      background-color: #003f7f;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+  </style>
 </head>
+
 <body>
-    <h2>Upload Image and Describe Text Change</h2>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" required><br><br>
-        <textarea name="description" rows="4" cols="50" placeholder="e.g., replace 'SALE' with 'DISCOUNT'"></textarea><br><br>
-        <button type="submit">Submit</button>
-    </form>
+  <button class="toggle-button" aria-label="Toggle dark mode" onclick="toggleDarkMode()">🌙</button>
+  <header>
+    <img src="https://img.icons8.com/fluency/96/medical-doctor.png" alt="Medicare Logo" />
+    <h1>Medicare Consultancy</h1>
+    <p>Guiding Medical Aspirants Toward the Right Future</p>
+  </header>
+
+  <nav role="navigation" aria-label="Primary navigation">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#guide">NEET Guide</a>
+    <a href="#tools">Tools</a>
+    <a href="#faq">FAQ</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#form">Register</a>
+    <a href="#founders">Founders</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="about" tabindex="-1">
+    <h2>About Us</h2>
+    <p>We are a team of experienced consultants helping students with their medical admission process based on NEET scores. Our aim is to provide honest, transparent, and strategic counseling to secure seats in reputed institutions.</p>
+  </section>
+
+  <section id="services" tabindex="-1">
+    <h2>Our Services</h2>
+    <ul>
+      <li>NEET Counseling Guidance</li>
+      <li>College Selection Strategy</li>
+      <li>Application Assistance</li>
+      <li>Documentation Support</li>
+      <li>Mock Counseling Sessions</li>
+    </ul>
+  </section>
+
+  <section id="guide" tabindex="-1">
+    <h2>NEET Counseling Process</h2>
+    <p>The NEET counseling involves registration on MCC or state websites, choice filling, seat allotment, and final reporting to the college. We help you navigate each step with confidence.</p>
+  </section>
+
+  <section id="tools" tabindex="-1">
+    <h2>College Predictor & State Cutoffs</h2>
+    <div class="tool-box" aria-label="College Predictor Tool">
+      <h3>College Predictor</h3>
+      <input type="number" id="predictScore" placeholder="Enter your NEET Score" aria-describedby="predictHelp" />
+      <button onclick="predictCollege()">Predict</button>
+      <p id="predictionResult" role="alert" aria-live="polite"></p>
+      <small id="predictHelp">Enter your NEET score to predict eligible colleges.</small>
+    </div>
+    <div class="tool-box" aria-label="State-wise NEET Cutoffs">
+      <h3>State-wise NEET Cutoffs</h3>
+      <select id="stateSelector" onchange="showCutoff()" aria-label="Select State for cutoff information">
+        <option value="">Select State</option>
+        <option value="maharashtra">Maharashtra</option>
+        <option value="karnataka">Karnataka</option>
+        <option value="uttarpradesh">Uttar Pradesh</option>
+      </select>
+      <p id="cutoffResult" role="alert" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="faq" tabindex="-1">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-container" role="list">
+      <div class="faq-item" role="listitem">
+        <div class="faq-question" tabindex="0" role="button" aria-expanded="false" aria-controls="faq1a" id="faq1q">What is NEET counseling?</div>
+        <div class="faq-answer" id="faq1a" role="region" aria-labelledby="faq1q">NEET counseling is the process by which students are allotted medical colleges based on their NEET scores through official online platforms.</div>
+      </div>
+      <div class="faq-item" role="listitem">
+        <div class="faq-question" tabindex="0" role="button" aria-expanded="false" aria-controls="faq2a" id="faq2q">When does counseling start?</div>
+        <div class="faq-answer" id="faq2a" role="region" aria-labelledby="faq2q">Counseling usually starts after NEET results are declared. The timeline varies by state and MCC.</div>
+      </div>
+      <div class="faq-item" role="listitem">
+        <div class="faq-question" tabindex="0" role="button" aria-expanded="false" aria-controls="faq3a" id="faq3q">How can Medicare Consultancy help?</div>
+        <div class="faq-answer" id="faq3a" role="region" aria-labelledby="faq3q">We guide students step-by-step, assist with registration, choice filling, and provide mock counseling sessions to boost confidence.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" tabindex="-1">
+    <h2>Testimonials</h2>
+    <div class="testimonial" tabindex="0">
+      <p>"Thanks to Medicare Consultancy, I got admission in my dream college without any stress!" – Priya S.</p>
+    </div>
+    <div class="testimonial" tabindex="0">
+      <p>"Their mock sessions and guidance made the process super smooth." – Rohit M.</p>
+    </div>
+  </section>
+
+  <section id="form" tabindex="-1">
+    <h2>Student Registration Form</h2>
+    <div class="form-container" role="form" aria-labelledby="formHeading">
+      <form id="studentForm" novalidate>
+        <input type="text" id="name" placeholder="Full Name" aria-required="true" required />
+        <input type="text" id="roll" placeholder="NEET Roll Number" aria-required="true" required />
+        <input type="number" id="score" placeholder="NEET Score" aria-required="true" required min="0" max="720" />
+        <select id="course" aria-label="Select Course">
+          <option value="MBBS">MBBS</option>
+          <option value="BDS">BDS</option>
+          <option value="BAMS">BAMS</option>
+          <option value="BHMS">BHMS</option>
+        </select>
+        <input type="text" id="location" placeholder="Preferred College/State" />
+        <input type="tel" id="contact" placeholder="Contact Number" aria-required="true" required pattern="[0-9]{10,15}" />
+        <input type="email" id="email" placeholder="Email Address" />
+        <button type="submit" aria-live="polite">Submit</button>
+      </form>
+      <a id="whatsappLink" class="whatsapp-link" href="#" target="_blank" rel="noopener" style="display:none"
+        aria-label="Send registration details to Jawwad on WhatsApp">Send to Jawwad via WhatsApp</a>
+    </div>
+  </section>
+
+  <section id="founders" tabindex="-1">
+    <h2>Meet the Founders</h2>
+    <div class="founders">
+      <div class="founder-card" tabindex="0">
+        <h3>Jawwad</h3>
+        <p>Founder & Lead Consultant</p>
+        <p>Contact: +91 9325288846</p>
+      </div>
+      <div class="founder-card" tabindex="0">
+        <h3>Sufiyan Awez</h3>
+        <p>Co-Founder & Student Advisor</p>
+        <p>Specialist in NEET Admission Strategy</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" tabindex="-1">
+    <h2>Contact Us</h2>
+    <p>Email: <a href="mailto:medicareconsultancy@gmail.com">medicareconsultancy@gmail.com</a></p>
+    <p>Phone: +91 9325288846</p>
+    <p>Address: 123 Medical Street, City, State, Country</p>
+  </section>
+
+  <div class="counters" aria-label="Statistics">
+    <div class="counter" tabindex="0">
+      <div class="counter-number" id="counter1">0</div>
+      <div class="counter-label">Seats Filled</div>
+    </div>
+    <div class="counter" tabindex="0">
+      <div class="counter-number" id="counter2">0</div>
+      <div class="counter-label">Happy Students</div>
+    </div>
+    <div class="counter" tabindex="0">
+      <div class="counter-number" id="counter3">0</div>
+      <div class="counter-label">Partner Colleges</div>
+    </div>
+  </div>
+
+  <div class="social-icons" aria-label="Social Media Links">
+    <a href="https://facebook.com/medicareconsultancy" target="_blank" rel="noopener" aria-label="Facebook">&#x1F30E;</a>
+    <a href="https://instagram.com/medicareconsultancy" target="_blank" rel="noopener" aria-label="Instagram">&#x1F4F7;</a>
+    <a href="https://linkedin.com/company/medicareconsultancy" target="_blank" rel="noopener" aria-label="LinkedIn">&#x1F465;</a>
+  </div>
+
+  <button id="backToTopBtn" aria-label="Back to top" onclick="scrollToTop()">↑</button>
+
+  <div id="loadingSpinner" role="status" aria-live="polite" aria-label="Loading"></div>
+
+  <script>
+    // Dark Mode toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const btn = document.querySelector('.toggle-button');
+      if (document.body.classList.contains('dark-mode')) {
+        btn.textContent = '☀️';
+        btn.setAttribute('aria-label', 'Toggle light mode');
+      } else {
+        btn.textContent = '🌙';
+        btn.setAttribute('aria-label', 'Toggle dark mode');
+      }
+    }
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const expanded = q.getAttribute('aria-expanded') === 'true';
+        q.setAttribute('aria-expanded', !expanded);
+        item.classList.toggle('open');
+      });
+      q.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          q.click();
+        }
+      });
+    });
+
+    // College Predictor simulation
+    function predictCollege() {
+      const scoreInput = document.getElementById('predictScore');
+      const result = document.getElementById('predictionResult');
+      const score = parseInt(scoreInput.value, 10);
+      if (isNaN(score) || score < 0 || score > 720) {
+        result.textContent = 'Please enter a valid NEET score between 0 and 720.';
+        return;
+      }
+      let message = '';
+      if (score >= 600) {
+        message = 'You are likely to get admission in top government medical colleges.';
+      } else if (score >= 500) {
+        message = 'You have good chances in reputed private medical colleges.';
+      } else if (score >= 400) {
+        message = 'You may get admission in less competitive private colleges.';
+      } else {
+        message = 'Consider improving your score or look into alternative options.';
+      }
+      result.textContent = message;
+    }
+
+    // State cutoff simulation
+    function showCutoff() {
+      const state = document.getElementById('stateSelector').value;
+      const cutoffResult = document.getElementById('cutoffResult');
+      let cutoff = '';
+      switch (state) {
+        case 'maharashtra':
+          cutoff = 'Maharashtra NEET cutoff for general category is approx. 590.';
+          break;
+        case 'karnataka':
+          cutoff = 'Karnataka NEET cutoff for general category is approx. 570.';
+          break;
+        case 'uttarpradesh':
+          cutoff = 'Uttar Pradesh NEET cutoff for general category is approx. 580.';
+          break;
+        default:
+          cutoff = '';
+      }
+      cutoffResult.textContent = cutoff;
+    }
+
+    // Form submit
+    document.getElementById('studentForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const roll = document.getElementById('roll').value.trim();
+      const score = document.getElementById('score').value.trim();
+      const course = document.getElementById('course').value;
+      const location = document.getElementById('location').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      // Simple validation
+      if (!name || !roll || !score || !contact) {
+        alert('Please fill all required fields (Name, Roll Number, Score, Contact).');
+        return;
+      }
+
+      // Compose WhatsApp message
+      const message =
+        `Hello Jawwad, I would like to register for medical consultancy:\n` +
+        `Name: ${name}\nRoll No: ${roll}\nScore: ${score}\nCourse: ${course}\n` +
+        `Preferred College/State: ${location}\nContact: ${contact}\nEmail: ${email}`;
+
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappLink = `https://wa.me/919325288846?text=${encodedMessage}`;
+
+      const waLinkElem = document.getElementById('whatsappLink');
+      waLinkElem.href = whatsappLink;
+      waLinkElem.style.display = 'inline-block';
+      waLinkElem.focus();
+    });
+
+    // Back to top button
+    const backToTopBtn = document.getElementById('backToTopBtn');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.style.display = 'block';
+      } else {
+        backToTopBtn.style.display = 'none';
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      backToTopBtn.blur();
+    }
+
+    // Counters animation
+    function animateCounter(id, target) {
+      const el = document.getElementById(id);
+      let count = 0;
+      const step = Math.ceil(target / 100);
+      const interval = setInterval(() => {
+        count += step;
+        if (count >= target) {
+          count = target;
+          clearInterval(interval);
+        }
+        el.textContent = count.toLocaleString();
+      }, 20);
+    }
+
+    // Animate on load
+    window.addEventListener('load', () => {
+      animateCounter('counter1', 1200);
+      animateCounter('counter2', 950);
+      animateCounter('counter3', 15);
+    });
+  </script>
 </body>
+
 </html>
